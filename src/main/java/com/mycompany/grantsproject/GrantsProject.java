@@ -2,21 +2,23 @@ package com.mycompany.grantsproject;
 
 import java.util.List;
 
+/**
+ * Главный класс приложения.
+ * Запускает все этапы обработки данных.
+ */
 public class GrantsProject {
 
     public static void main(String[] args) {
 
-        String path = "Гранты.csv";
+        // Чтение CSV
+        List<Grant> grants = CSVReaderService.readGrants("Гранты.csv");
 
-       List<Grant> grants = CSVReaderService.readGrants(path);
+        System.out.println("Прочитано записей: " + grants.size());
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println(grants.get(i));
-        }
-
-        System.out.println("Всего записей: " + grants.size());
-        
-        DatabaseManager.connect();
+        //Создание таблиц
         DatabaseManager.createTables();
+
+        //Запись данных в БД
+        DatabaseManager.insertData(grants);
     }
 }
