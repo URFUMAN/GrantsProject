@@ -125,4 +125,36 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    /**
+    * Получает среднее количество рабочих мест по каждому фискальному году.
+    *
+    * @return список строк вида "год - среднее значение"
+    */
+    public static void getAverageJobsByYear() {
+
+        String sql = """
+            SELECT fiscal_year, AVG(jobs_created) AS avg_jobs
+            FROM grants
+            GROUP BY fiscal_year
+            ORDER BY fiscal_year
+        """;
+
+        try (Connection conn = connect();
+             var stmt = conn.createStatement();
+             var rs = stmt.executeQuery(sql)) {
+
+            System.out.println("Среднее количество рабочих мест по годам:");
+
+            while (rs.next()) {
+                int year = rs.getInt("fiscal_year");
+                double avg = rs.getDouble("avg_jobs");
+
+                System.out.println(year + " -> " + avg);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

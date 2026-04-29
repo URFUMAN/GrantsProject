@@ -20,5 +20,8 @@ public class GrantsProject {
 
         //Запись данных в БД
         DatabaseManager.insertData(grants);
+        
+        //Выполнение задачи 1
+        DatabaseManager.getAverageJobsByYear();
     }
 }
