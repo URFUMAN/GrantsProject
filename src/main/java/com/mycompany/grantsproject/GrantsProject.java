@@ -28,8 +28,11 @@ public class GrantsProject {
         {
             System.out.println(s.getYear() + " -> " + s.getAvgJobs());
         }
-
         // строим график
         ChartService.createJobsChart(stats);
+        
+        // Задача 2: средний грант для Salon/Barbershop
+        double avgGrant = DatabaseManager.getAverageGrantForSalonBarbershop();
+        System.out.println("Средний размер гранта (Salon/Barbershop): $" + avgGrant);
     }
 }

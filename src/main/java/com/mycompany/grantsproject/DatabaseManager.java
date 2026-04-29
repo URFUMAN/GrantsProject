@@ -160,4 +160,31 @@ public class DatabaseManager {
 
         return result;
     }
+    
+        /**
+     * Средний размер гранта для бизнеса "Salon/Barbershop"
+     */
+    public static double getAverageGrantForSalonBarbershop() {
+
+        String sql = """
+            SELECT AVG(g.grant_amount) AS avg_grant
+            FROM grants g
+            JOIN business_types bt ON g.business_type_id = bt.id
+            WHERE bt.name = 'Salon/Barbershop'
+        """;
+
+        try (Connection conn = connect();
+             var stmt = conn.createStatement();
+             var rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return rs.getDouble("avg_grant");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 }
