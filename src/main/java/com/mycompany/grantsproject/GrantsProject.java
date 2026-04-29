@@ -34,5 +34,10 @@ public class GrantsProject {
         // Задача 2: средний грант для Salon/Barbershop
         double avgGrant = DatabaseManager.getAverageGrantForSalonBarbershop();
         System.out.println("Средний размер гранта (Salon/Barbershop): $" + avgGrant);
+        
+        // Задача 2
+        System.out.println("\n=== Task 3 ===");
+        String result = DatabaseManager.getTopBusinessByJobsWithGrantLimit();
+        System.out.println("Тип бизнеса с максимальным числом рабочих мест (<= 55000): " + result);
     }
 }

@@ -187,4 +187,38 @@ public class DatabaseManager {
 
         return 0;
     }
+    
+    /**
+    * Тип бизнеса с максимальным количеством рабочих мест
+    * при гранте <= 55000
+    */
+    public static String getTopBusinessByJobsWithGrantLimit()
+    {
+        String sql = """
+            SELECT bt.name, SUM(g.jobs_created) AS total_jobs
+            FROM grants g
+            JOIN business_types bt ON g.business_type_id = bt.id
+            WHERE g.grant_amount <= 55000
+            GROUP BY bt.name
+            ORDER BY total_jobs DESC
+            LIMIT 1
+        """;
+
+        try (Connection conn = connect();
+             var stmt = conn.createStatement();
+             var rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                String name = rs.getString("name");
+                int jobs = rs.getInt("total_jobs");
+
+                return name + " (" + jobs + " jobs)";
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "Нет данных";
+    }
 }
