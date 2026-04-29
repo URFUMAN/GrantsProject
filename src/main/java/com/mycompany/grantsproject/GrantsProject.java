@@ -21,7 +21,15 @@ public class GrantsProject {
         //Запись данных в БД
         DatabaseManager.insertData(grants);
         
+        
         //Выполнение задачи 1
-        DatabaseManager.getAverageJobsByYear();
+        List<YearStat> stats = DatabaseManager.getAverageJobsByYear();
+        for (YearStat s : stats)
+        {
+            System.out.println(s.getYear() + " -> " + s.getAvgJobs());
+        }
+
+        // строим график
+        ChartService.createJobsChart(stats);
     }
 }

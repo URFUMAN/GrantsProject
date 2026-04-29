@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Класс для работы с базой данных SQLite.
@@ -131,7 +132,9 @@ public class DatabaseManager {
     *
     * @return список строк вида "год - среднее значение"
     */
-    public static void getAverageJobsByYear() {
+    public static List<YearStat> getAverageJobsByYear() {
+
+        List<YearStat> result = new ArrayList<>();
 
         String sql = """
             SELECT fiscal_year, AVG(jobs_created) AS avg_jobs
@@ -144,17 +147,17 @@ public class DatabaseManager {
              var stmt = conn.createStatement();
              var rs = stmt.executeQuery(sql)) {
 
-            System.out.println("Среднее количество рабочих мест по годам:");
-
             while (rs.next()) {
                 int year = rs.getInt("fiscal_year");
                 double avg = rs.getDouble("avg_jobs");
 
-                System.out.println(year + " -> " + avg);
+                result.add(new YearStat(year, avg));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return result;
     }
 }
